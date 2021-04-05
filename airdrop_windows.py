@@ -38,7 +38,7 @@ def send():
             datas=f.read(1024)
         f.close()
         messagebox.showinfo("my message","Done Transferring!")
-def receive():#this function reveives the  file
+def receive():#this function revceives the  file
     SEPARATOR="<SEPARATOR>"
     s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
     s.connect(("<Enter the ip address of receiving machine>",12345))#Enter the ip address from the receiving machine
