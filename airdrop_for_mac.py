@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import filedialog,messagebox,LabelFrame,CENTER,FLAT
 import socket
 import os
+import tqdm
 
 button="none"
 location=""
@@ -31,11 +32,13 @@ def send():
         s.listen(10)
         c,addr=s.accept()
         c.send(f'{name}{SEPARATOR}{filesize}'.encode())
+        progress = tqdm.tqdm(range(file_size), f"Sending ", unit="B", unit_scale=True, unit_divisor=1024)
         f=open(location,'rb')
         datas=f.read(1024)
         while datas:
             c.send(datas)
             datas=f.read(1024)
+            progress.update(len(datas))
         f.close()
         messagebox.showinfo("my message","Done Transferring!")
         global button

@@ -31,13 +31,18 @@ def send():
         s.listen(10)
         c,addr=s.accept()
         c.send(f'{name}{SEPARATOR}{filesize}').encode()
+        progress = tqdm.tqdm(range(file_size), f"Sending ", unit="B", unit_scale=True, unit_divisor=1024)
         f=open(location,'rb')
         datas=f.read(1024)
         while datas:
             c.send(datas)
             datas=f.read(1024)
+            progress.update(len(datas))
         f.close()
         messagebox.showinfo("my message","Done Transferring!")
+        global button
+        button="none"
+        
 def receive():#this function reveives the  file
     SEPARATOR="<SEPARATOR>"
     s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
