@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import filedialog,messagebox,LabelFrame,CENTER,FLAT,RAISED
 import socket
 import os
+import tqdm
 
 button="none"
 location=""
@@ -40,14 +41,10 @@ def send():
             progress.update(len(datas))
         f.close()
         messagebox.showinfo("my message","Done Transferring!")
-<<<<<<< HEAD
         global button
         button="none"
         
-def receive():#this function reveives the  file
-=======
 def receive():#this function revceives the  file
->>>>>>> 02dd5cb3b781f6c09e1c4a87474cac320a597715
     SEPARATOR="<SEPARATOR>"
     s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
     s.connect(("<Enter the ip address of receiving machine>",12345))#Enter the ip address from the receiving machine
