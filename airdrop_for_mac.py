@@ -5,6 +5,7 @@ import os
 import tqdm
 
 button="none"
+temp=""
 location=""
 file_name=""
 file_size=0
