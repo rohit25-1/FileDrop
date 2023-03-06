@@ -43,4 +43,4 @@ If one is running on Mac and the other on Windows then download the Mac version 
 8. The file will be stored in the Downloads Folder of your PC.
 
 ```
-## PLEASE REPORT IF YOU ENCOUNTER ANY BUGS.
+## PLEASE REPORT IF YOU ENCOUNTER ANY BUGS
