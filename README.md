@@ -10,9 +10,12 @@ Socket
 
 ## Usage:
 ```
-Both the PC's should be connected to the same network.
-If both the PCs are running on Windows then download the Windows version of AirDrop for both the PCs and run it using python.
-If one is running on Mac and the other on Windows then download the Mac version for Mac and Windows version for Windows respectively.
+Both PCs must be connected to the same network.
+1. To send a file:
+-> Open the file.
+-> Click "Send."
+2.Once the sender has sent the file:
+-> Click "Receive" on the receiver's PC.
 ```
 
 ## Screenshots:
