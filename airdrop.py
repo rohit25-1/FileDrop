@@ -7,6 +7,7 @@ import threading
 import struct
 import time
 from pathlib import Path
+import platform
 
 button = "none"
 location = ""
@@ -30,22 +31,17 @@ def open_file():
 def get_local_ip():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     try:
-        # This does not have to be reachable
         s.connect(("8.8.8.8", 80))
         local_ip = s.getsockname()[0]
     except Exception:
         local_ip = "127.0.0.1"
-    finally:
-        s.close()
+    s.close()
     return local_ip
 
 
 def get_broadcast_address():
-    # Get the local IP address
     hostname = socket.gethostname()
     local_ip = socket.gethostbyname(hostname)
-
-    # Get the network mask
     subnet_mask = socket.inet_ntoa(
         struct.pack(">I", (0xFFFFFFFF << (32 - 24)) & 0xFFFFFFFF)
     )
@@ -124,8 +120,9 @@ def send():
         SEPARATOR = "<SEPARATOR>"
         s.listen(10)
         c, addr = s.accept()
-        c.send(f"{file_name}{SEPARATOR}{file_size}".encode())
 
+        c.send(f"{file_name}{SEPARATOR}{file_size}".encode())
+        progress_bar["value"] = 0
         progress_bar["maximum"] = file_size
         progress = tqdm.tqdm(
             range(file_size), f"Sending ", unit="B", unit_scale=True, unit_divisor=1024
@@ -152,10 +149,9 @@ def send():
 
 
 def get_downloads_folder():
-    if os.name == "nt":  # Windows
+    if os.name == "nt":
         downloads_path = Path.home() / "Downloads"
     else:
-        # For macOS and Linux
         downloads_path = Path.home() / "Downloads"
 
     return downloads_path
@@ -175,10 +171,10 @@ def receive():
     received = s.recv(4096).decode()
     filename, filesize = received.split(SEPARATOR)
     filesize = int(filesize)
-
+    progress_bar["value"] = 0
     progress_bar["maximum"] = filesize
     progress = tqdm.tqdm(
-        range(filesize), f"Receiving ", unit="B", unit_scale=True, unit_divisor=1024
+        range(filesize), f"Receiving ", unit="B", unit_scale=True, unit_divisor=4096
     )
     downloads_folder = get_downloads_folder()
     name = downloads_folder / filename
@@ -213,14 +209,14 @@ windowHeight = window.winfo_reqheight()
 positionRight = int(window.winfo_screenwidth() / 2 - windowWidth / 2)
 positionDown = int(window.winfo_screenheight() / 2 - windowHeight / 2)
 window.geometry("+{}+{}".format(positionRight, positionDown))
-window.geometry("400x200")
-window.title("Airdrop")
+window.geometry("500x250")
+window.title("Filedrop")
 
 labelframe = LabelFrame(window, bd=0, height=400)
 labelframe.pack(fill="both", expand="yes")
 labelframe.place(relx=0.5, rely=0.5, anchor=CENTER)
 
-label1 = tk.Label(labelframe, text="AirDrop ", font=("Helvetica", 50), pady=5)
+label1 = tk.Label(labelframe, text="FileDrop", font=("Helvetica", 50), pady=5)
 label1.pack()
 
 label_nameOffile = tk.Label(labelframe, text="", font=("Helvetica", 15), fg="gray46")
@@ -228,6 +224,11 @@ label_nameOffile.pack()
 
 labelframe2 = LabelFrame(labelframe, bd=0, height=10)
 labelframe2.pack(fill="both", expand="no")
+labelframe3 = LabelFrame(labelframe, bd=0, height=10)
+labelframe3.pack(fill="both", expand="no")
+labelframe4 = LabelFrame(labelframe, bd=0, height=10)
+labelframe4.pack(fill="both", expand="no")
+
 
 open_button = tk.Button(
     labelframe2, text="open", relief=FLAT, width=5, command=open_file
@@ -237,15 +238,15 @@ open_button.grid(row=0, column=1, pady=10)
 send_button = tk.Button(
     labelframe2, text="send", relief=FLAT, width=5, command=run_send_thread
 )
-send_button.grid(row=0, column=2)
+send_button.grid(row=0, column=3)
 
 receive_button = tk.Button(
-    labelframe2, text="receive", relief=FLAT, width=5, command=run_receive_thread
+    labelframe3, text="receive", relief=FLAT, width=5, command=run_receive_thread
 )
-receive_button.grid(row=0, column=3)
+receive_button.grid(row=0, column=2)
 
 progress_bar = ttk.Progressbar(
-    window, orient="horizontal", length=300, mode="determinate"
+    labelframe4, orient="horizontal", length=200, mode="determinate"
 )
 progress_bar.pack(pady=20)
 
