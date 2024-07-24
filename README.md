@@ -5,7 +5,6 @@ This Program Helps You To Transfer Files From Windows To Mac And Vice-Versa
 ```
 Python3
 Tkinter
-Socket
 ```
 
 ## Usage:
@@ -23,7 +22,9 @@ Both PCs must be connected to the same network.
 ### macOS
 ![](https://raw.github.com/rohit25-1/AirDrop-For-Windows/master/Screenshots/ss_mac.png)
 
-### Windows
-![](https://raw.github.com/rohit25-1/AirDrop-For-Windows/master/Screenshots/ss_windows.jpeg)
+
+### Architecture
+![](https://raw.github.com/rohit25-1/AirDrop-For-Windows/master/Screenshots/architecture.png)
+
 
 ## PLEASE REPORT IF YOU ENCOUNTER ANY BUGS
